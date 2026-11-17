@@ -1,9 +1,18 @@
-# Modelo de dados previsto
+# Modelo de dados
 
-Estado atual (Etapa 2): existem `territorio`, `categoria_recurso`, `usuario`, `organizacao`, `recurso_comunitario`
-(com subtipos `ponto_agua`, `abrigo`, `ponto_energia`, `ponto_alimentos`), `registro_disponibilidade`, `recurso_historico`,
-`necessidade`, `solicitacao`, `solicitacao_historico`, `voluntario` e `auditoria_registro`.
-Ainda não implementadas: `EventoEmergencia`, `IndicadorCobertura` e `FonteExterna` (etapas seguintes).
+Estado atual (Etapa 5): além das tabelas das Etapas 1–2 (`territorio`, `categoria_recurso`, `usuario`,
+`organizacao`, `recurso_comunitario` com subtipos `ponto_agua`, `abrigo`, `ponto_energia`, `ponto_alimentos`,
+`registro_disponibilidade`, `recurso_historico`, `necessidade`, `solicitacao`, `solicitacao_historico`,
+`voluntario`, `auditoria_registro`), a Etapa 3 criou `fonte_externa`, `importacao_dataset`, `setor_censitario`,
+`registro_meteorologico` e `registro_desastre` (migration V7), e a Etapa 4 criou `cenario_emergencia` e
+`indicador_cobertura` (migration V8).
+
+Decisões de modelagem das Etapas 3–4, adaptadas à estrutura real das fontes: o **histórico de importações**
+é a própria tabela `importacao_dataset` (uma linha por operação, com totais, status e erros — entidade
+`HistoricoImportacao` fundida em `ImportacaoDataset`); o papel de `IndicadorTerritorial` é cumprido por
+`setor_censitario` (dados territoriais) e `indicador_cobertura` (indicadores calculados); `EventoEmergencia`
+se materializou como `cenario_emergencia` (simulação de planejamento). O diagrama de classes completo está
+em [diagrama-classes.md](diagrama-classes.md).
 
 Decisões de modelagem da Etapa 2: Morador, Gestor e Administrador são **perfis** de `usuario` (composição, sem herança);
 `RecursoComunitario` usa herança JOINED apenas para água, abrigo, energia e alimentação, que têm atributos próprios;

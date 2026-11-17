@@ -8,3 +8,6 @@ logs/
 .project
 .settings/
 .DS_Store
+_to_delete/
+*.tar.gz
+*.log

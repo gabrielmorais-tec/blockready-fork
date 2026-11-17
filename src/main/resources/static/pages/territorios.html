@@ -9,14 +9,44 @@
 <link rel="stylesheet" href="/css/components.css">
 <title>Territórios · BLOCKREADY</title>
 </head>
-<body data-page="territorios" data-title="Territórios">
-<main id="content" class="content">
-  <section class="empty-state">
-    <h2>Módulo ainda não disponível</h2>
-    <p>Aqui ficará o mapa dos territórios atendidos, com base geográfica em PostGIS e Leaflet.</p>
+<body data-page="territorios" data-title="Territórios e dados geográficos">
+<main id="content" class="content stack" hidden>
+
+  <section aria-labelledby="h-resumo">
+    <h2 id="h-resumo">Base territorial (Geographic Data)</h2>
+    <p class="panel-note">Dados importados das fontes oficiais. SRID 4326 (WGS 84), o mesmo das
+    coordenadas dos recursos comunitários.</p>
+    <div id="erro-resumo"></div>
+    <div class="stat-grid" id="resumo" aria-live="polite"></div>
   </section>
+
+  <section class="panel" aria-labelledby="h-setores">
+    <h2 id="h-setores">Setores censitários (IBGE — Censo 2022)</h2>
+    <div id="erro-setores"></div>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th>Código do setor</th><th>Município/UF</th><th>População</th><th>Domicílios</th><th>Área (km²)</th><th>Malha</th><th>Origem</th></tr></thead>
+        <tbody id="lista-setores"><tr><td colspan="7">Carregando…</td></tr></tbody>
+      </table>
+    </div>
+    <div class="pager" id="pager-setores"></div>
+  </section>
+
+  <section class="panel" aria-labelledby="h-estacoes">
+    <h2 id="h-estacoes">Estações pluviométricas (CEMADEN) — últimas 72 h</h2>
+    <p class="panel-note">Cada medição vale para a localização da estação; horários armazenados em UTC.</p>
+    <div id="erro-estacoes"></div>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th>Estação</th><th>Município/UF</th><th>Acumulado 72 h (mm)</th><th>Máximo (mm)</th><th>Última medição</th></tr></thead>
+        <tbody id="lista-estacoes"><tr><td colspan="5">Carregando…</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+
 </main>
 <script src="/js/api.js"></script>
 <script src="/js/layout.js"></script>
+<script src="/js/territorios.js"></script>
 </body>
 </html>

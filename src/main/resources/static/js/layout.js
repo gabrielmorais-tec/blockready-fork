@@ -10,8 +10,12 @@
     { id: 'solicitacoes', label: 'Solicitações', href: '/pages/solicitacoes.html', perfis: TODOS, icon: 'M9 5h10M9 12h10M9 19h10M4 5h.01M4 12h.01M4 19h.01' },
     { id: 'organizacoes', label: 'Organizações', href: '/pages/organizacoes.html', perfis: ['ORGANIZACAO'].concat(STAFF), icon: 'M4 21V7l8-4 8 4v14M9 21v-6h6v6' },
     { id: 'voluntarios', label: 'Voluntários', href: '/pages/voluntarios.html', perfis: TODOS, icon: 'M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 6.5M18 14a6.5 6.5 0 0 1 3.5 6' },
+    { id: 'mapa', label: 'Mapa', href: '/pages/mapa.html', perfis: TODOS, icon: 'M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14' },
     { id: 'territorios', label: 'Territórios', href: '/pages/territorios.html', perfis: STAFF, icon: 'M12 21s-7-6.2-7-11a7 7 0 1 1 14 0c0 4.8-7 11-7 11zM12 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z' },
-    { id: 'indicadores', label: 'Indicadores', href: '/pages/indicadores.html', perfis: STAFF, icon: 'M5 20V10M12 20V4M19 20v-7' }
+    { id: 'dados', label: 'Dados externos', href: '/pages/dados.html', perfis: STAFF, icon: 'M12 3c4.4 0 8 1.3 8 3s-3.6 3-8 3-8-1.3-8-3 3.6-3 8-3zM4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3' },
+    { id: 'indicadores', label: 'Insights', href: '/pages/indicadores.html', perfis: STAFF, icon: 'M5 20V10M12 20V4M19 20v-7' },
+    { id: 'cenarios', label: 'Cenários', href: '/pages/cenarios.html', perfis: STAFF, icon: 'M12 3 2 20h20L12 3zM12 10v4M12 17.5h.01' },
+    { id: 'admin', label: 'Administração', href: '/pages/admin.html', perfis: ['ADMIN'], icon: 'M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3 1a7 7 0 0 0-2-1.2L14 3h-4l-.5 2.7a7 7 0 0 0-2 1.2l-2.3-1-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-1a7 7 0 0 0 2 1.2L10 21h4l.5-2.7a7 7 0 0 0 2-1.2l2.3 1 2-3.4-2-1.5c.1-.4.2-.8.2-1.2z' }
   ];
 
   const content = document.getElementById('content');

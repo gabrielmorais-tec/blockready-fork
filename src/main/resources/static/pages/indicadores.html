@@ -7,16 +7,36 @@
 <link rel="stylesheet" href="/css/tokens.css">
 <link rel="stylesheet" href="/css/layout.css">
 <link rel="stylesheet" href="/css/components.css">
-<title>Indicadores · BLOCKREADY</title>
+<title>Community Insights · BLOCKREADY</title>
 </head>
-<body data-page="indicadores" data-title="Indicadores">
-<main id="content" class="content">
-  <section class="empty-state">
-    <h2>Módulo ainda não disponível</h2>
-    <p>Aqui aparecerão os indicadores de cobertura que mostram onde os recursos são insuficientes.</p>
+<body data-page="indicadores" data-title="Community Insights">
+<main id="content" class="content stack" hidden>
+
+  <section aria-labelledby="h-cri">
+    <h2 id="h-cri">Community Resilience Index (CRI)</h2>
+    <p class="panel-note" id="cri-fonte">CRI = capacidade disponível ÷ demanda estimada × 100, por categoria.
+    Cobertura de 100% indica compatibilidade com a demanda estimada — não garantia de segurança.</p>
+    <div id="erro-cri"></div>
+    <div class="grid-2" id="cri-cards"></div>
+    <div class="notice" role="note" id="cri-limitacoes" hidden></div>
   </section>
+
+  <section class="panel" aria-labelledby="h-grafico">
+    <h2 id="h-grafico">Cobertura por categoria</h2>
+    <div id="grafico-cri" class="stack"></div>
+  </section>
+
+  <section aria-labelledby="h-insights">
+    <h2 id="h-insights">Os quatro insights estratégicos</h2>
+    <p class="panel-note">Cada insight informa pergunta, dados, fontes, metodologia, resultado, interpretação,
+    decisão recomendada e impacto — e avisa quando a base de dados é insuficiente.</p>
+    <div id="erro-insights"></div>
+    <div id="insights" class="stack"></div>
+  </section>
+
 </main>
 <script src="/js/api.js"></script>
 <script src="/js/layout.js"></script>
+<script src="/js/insights.js"></script>
 </body>
 </html>

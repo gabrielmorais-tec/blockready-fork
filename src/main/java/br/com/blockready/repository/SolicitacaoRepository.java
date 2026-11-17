@@ -12,4 +12,14 @@ public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long>,
 
     @Query("select s.status, count(s) from Solicitacao s group by s.status")
     List<Object[]> contarPorStatus();
+
+    /** Solicitações em aberto (não finais) agrupadas pela categoria da necessidade. */
+    @Query("""
+            select s.necessidade.categoria, count(s) from Solicitacao s
+            where s.status in (br.com.blockready.model.enums.StatusSolicitacao.ABERTA,
+                               br.com.blockready.model.enums.StatusSolicitacao.EM_ANALISE,
+                               br.com.blockready.model.enums.StatusSolicitacao.EM_ATENDIMENTO)
+            group by s.necessidade.categoria
+            """)
+    List<Object[]> abertasPorCategoria();
 }

@@ -8,39 +8,38 @@ e apoiar o planejamento durante emergências, com horizonte de até 72 horas.
 
 > O BLOCKREADY é uma ferramenta de apoio ao planejamento. Não garante a sobrevivência nem a segurança de uma comunidade.
 
-**Estado: Etapa 2 de 5 (sistema central).** Autenticação por perfil, recursos comunitários, necessidades e solicitações, organizações e voluntários estão implementados. Territórios e Indicadores seguem como placeholders. Datasets externos, CRI e insights não fazem parte desta etapa.
+**Estado: Etapa 5 de 5 (aplicação completa).** Autenticação por perfil, recursos comunitários, necessidades e
+solicitações, organizações, voluntários, importação de dados públicos (IBGE, CEMADEN, Atlas de Desastres),
+Community Resilience Index, quatro insights estratégicos, simulação de cenários (Strategy), mapa Leaflet,
+dashboard integrado, Swagger e testes automatizados.
 
 ## Tecnologias
 
 Java 25 · Spring Boot 3.5 (MVC, Data JPA, Security, Validation, Actuator) · Maven · PostgreSQL 16 + PostGIS 3.4 ·
-Flyway · Hibernate Spatial · JUnit 5 · HTML5/CSS3/JavaScript puro · Docker Compose · Leaflet (etapas futuras).
+Flyway · Hibernate Spatial · JUnit 5 · HTML5/CSS3/JavaScript puro · Leaflet 1.9 · springdoc-openapi (Swagger) ·
+Docker Compose.
 
-## Pré-requisitos
-
-- **Via Docker (recomendado):** Docker com Docker Compose v2.
-- **Via Maven local:** JDK 25, Maven 3.9+ e um PostgreSQL com PostGIS (o Compose pode subir só o banco).
-
-## Execução com Docker
+## Execução com Docker (recomendado)
 
 ```bash
-cp .env.example .env        # edite e defina DB_PASSWORD
+cp .env.example .env        # já vem com valores de demonstração prontos para avaliação local
 docker compose up --build
 ```
 
-Acesse http://localhost:8080 (ou a porta de `APP_PORT`).
+Acesse http://localhost:8080 (ou a porta de `APP_PORT`). Para encerrar: `docker compose down`
+(os dados do banco ficam no volume `blockready-db`; para apagar tudo: `docker compose down -v`).
 
-## Execução local (Maven)
+### Execução local (Maven)
 
 ```bash
-cp .env.example .env        # defina DB_PASSWORD
 docker compose up -d db     # sobe só o PostgreSQL/PostGIS
-
 # Linux/macOS
 set -a; source .env; set +a
 mvn spring-boot:run
 ```
 
 No Windows (PowerShell), defina as variáveis com `$env:DB_PASSWORD="..."` antes de `mvn spring-boot:run`.
+Requer JDK 25 e Maven 3.9+.
 
 ## Verificação
 
@@ -48,138 +47,147 @@ No Windows (PowerShell), defina as variáveis com `$env:DB_PASSWORD="..."` antes
 curl -i http://localhost:8080/api/v1/health
 ```
 
-Resposta esperada (HTTP 200): `status: "UP"`, banco `UP` e a versão do PostGIS. Se o banco ou o PostGIS falharem, a
-resposta é HTTP 503 com `status: "DOWN"`. O endpoint padrão `/actuator/health` também está disponível.
+Resposta esperada (HTTP 200): `status: "UP"`, banco `UP` e a versão do PostGIS. `/actuator/health` também responde.
 
 Testes:
 
 ```bash
-mvn test      # unitários (sem banco nem Docker)
-mvn verify    # inclui FluxoComunitarioIT, que usa Testcontainers (exige Docker)
+mvn test      # unitários (CSV, importadores, CRI, estratégias — sem banco nem Docker)
+mvn verify    # inclui FluxoComunitarioIT com Testcontainers (exige Docker)
 ```
+
+## Credenciais de demonstração (login para avaliação)
+
+Usando o `.env.example` copiado para `.env`, o primeiro administrador é criado automaticamente na primeira
+execução. Logins **exclusivamente demonstrativos** (válidos apenas na sua instância local — troque-os em
+qualquer uso fora de demonstração):
+
+| Perfil | E-mail | Senha |
+|---|---|---|
+| **Administrador** | `admin@blockready.local` | `AdminBlockready2026` |
+| Organização parceira (crie pela tela de cadastro, ex.:) | `org@blockready.local` | `OrgBlockready2026` |
+
+> A conta de organização não vem pré-criada num banco novo: cadastre-a em `/cadastro.html` (perfil
+> "Organização parceira") e aprove-a com o administrador. Moradores criam a própria conta livremente.
+
+## Primeiro acesso e perfis
+
+1. Entre em `/login.html` com o administrador acima (ou defina outro `BOOTSTRAP_ADMIN_EMAIL`/`BOOTSTRAP_ADMIN_PASSWORD` no `.env`).
+2. Perfis e permissões:
+
+| Perfil | Pode |
+|---|---|
+| **Morador** | criar conta, consultar recursos e o mapa, registrar necessidades, acompanhar solicitações |
+| **Organização parceira** | gerenciar seus dados, cadastrar recursos, atualizar disponibilidade, ver suas solicitações |
+| **Gestor comunitário** | validar recursos, administrar organizações, importar dados, insights, cenários, territórios |
+| **Administrador** | tudo do gestor + gerenciar usuários/permissões e consultar auditoria |
+
+Contas de gestor são criadas pelo admin (`POST /api/v1/usuarios` ou tela de administração).
 
 ## Variáveis de ambiente
 
 | Variável | Padrão | Descrição |
 |---|---|---|
 | `DB_PASSWORD` | — (obrigatória) | Senha do PostgreSQL |
-| `BOOTSTRAP_ADMIN_EMAIL` / `BOOTSTRAP_ADMIN_PASSWORD` | vazio | Cria o primeiro administrador se ainda não existir nenhum (senha de 8 a 72 caracteres). Sem elas, nenhum admin é criado |
-| `SESSION_COOKIE_SECURE` | `false` | Defina `true` quando servir por HTTPS |
+| `BOOTSTRAP_ADMIN_EMAIL` / `BOOTSTRAP_ADMIN_PASSWORD` | vazio | Primeiro administrador (senha de 8 a 72 caracteres) |
+| `SESSION_COOKIE_SECURE` | `false` | `true` quando servir por HTTPS |
 | `DB_NAME` / `DB_USER` | `blockready` | Banco e usuário |
 | `DB_HOST` / `DB_PORT` | `localhost` / `5432` | Endereço do banco (no Compose, `DB_HOST` é `db`) |
-| `APP_PORT` | `8080` | Porta HTTP da aplicação |
+| `APP_PORT` | `8080` | Porta HTTP |
 | `LOG_LEVEL_ROOT` / `LOG_LEVEL_APP` | `INFO` | Níveis de log |
-| `LOG_DIR` | `logs` | Pasta dos logs em arquivo (rotação diária/10 MB, 14 dias) |
+| `LOG_DIR` | `logs` | Pasta dos logs (rotação diária/10 MB, 14 dias) |
 
 Nenhuma credencial é versionada: `.env` está no `.gitignore`.
+
+## Integração de dados públicos (Etapa 3)
+
+As três fontes oficiais são integradas por **importação de arquivos CSV públicos** (tela **Dados externos**,
+perfis gestor/admin), mecanismo previsto quando os dados são distribuídos como arquivos — nenhum endpoint foi
+inventado. Cada importação tem pré-visualização, validação, controle de duplicidade (hash do arquivo e chaves
+naturais dos registros), histórico com totais e erros, e marcação explícita de **dados demonstrativos**.
+
+| Fonte | Abrangência | Colunas aceitas (apelidos também) | Uso |
+|---|---|---|---|
+| **IBGE — Censo 2022** | setor censitário | `CD_SETOR; NM_MUN; SIGLA_UF; v0001 (população); v0002 (domicílios); AREA_KM2?; WKT?` | demanda estimada e cobertura territorial |
+| **CEMADEN — pluviometria** | ponto da estação | `codEstacao; nomeEstacao; municipio; uf; latitude; longitude; datahora (UTC); valorMedida` | monitoramento de prontidão |
+| **Atlas de Desastres — MIDR** | município | `municipio; uf; descricao_tipologia; cobrade?; data_registro; DH_MORTOS; DH_TOTAL_AFETADOS; DH_DESABRIGADOS; DH_DESALOJADOS; prejuizo_total?` | histórico de cenários |
+
+Tratamento aplicado: horários do CEMADEN convertidos/armazenados em **UTC**; valores ausentes ou inválidos
+rejeitados linha a linha com o motivo; estação/período de referência identificados; geometrias em **SRID 4326**
+(o mesmo dos recursos), com índices GiST; registros do Atlas **nunca** atribuídos a bairros (abrangência municipal);
+medições de estação associadas a recursos apenas por proximidade espacial explícita.
+
+Arquivos de demonstração (marque **"Dados demonstrativos"** ao importar): `docs/dados-exemplo/`
+(`ibge-setores-demo.csv`, `cemaden-chuva-demo.csv`, `atlas-desastres-demo.csv`). As medições de demonstração
+cobrem datas próximas a nov/2026; dados reais devem ser baixados nos portais oficiais das fontes.
+
+## Inteligência analítica (Etapa 4)
+
+**Community Resilience Index**: `CRI = capacidade disponível ÷ demanda estimada × 100`, por categoria.
+Capacidade = soma dos recursos **validados** com unidade compatível com a escala da categoria (litros p/ água,
+vagas p/ abrigo, refeições p/ alimentação, pessoas p/ energia/comunicação, atendimentos p/ saúde — recursos com
+unidade incompatível são excluídos e informados). Demanda = população dos setores do IBGE × parâmetros de
+planejamento **configuráveis** (padrões: 3 L/pessoa/dia, 2 refeições/pessoa/dia, abrigo p/ 30% dos afetados,
+energia/comunicação p/ 20%, saúde p/ 5% — premissas, não dados oficiais). Faixas visuais configuráveis
+(≥90% suficiente, ≥50% parcial, abaixo insuficiente, sem base = SEM_DADOS). Divisão por zero e ausência de dados
+são tratadas como SEM_DADOS; **100% de cobertura não é garantia de segurança**.
+
+**Quatro insights** (tela **Insights**), todos com pergunta, dados, fontes, metodologia, resultado, interpretação,
+decisão recomendada, impacto e limitações — e aviso de "dados insuficientes" quando a base não permite a análise:
+1. **Historical Disaster Exposure** — tipos de desastre com maior impacto histórico (Atlas, municipal).
+2. **Community Resource Coverage** — população × distribuição espacial dos recursos (IBGE + PostGIS `ST_Contains`).
+3. **Emergency Readiness Monitoring** — chuva observada (CEMADEN, 72 h) × disponibilidade × solicitações
+   (descritivo; sem inferência causal).
+4. **Smart Resource Allocation** — déficit por categoria + priorização explicável via **padrão Strategy**.
+
+**Cenários (72h Planning)** (tela **Cenários**): enchente, tempestade intensa, interrupção de energia e
+interrupção de serviços essenciais; horizonte configurável até 72 h; % da população afetada e parâmetros de
+demanda ajustáveis; cada tipo usa sua estratégia de priorização; cenários podem ser salvos e comparados.
+É ferramenta de planejamento, não previsão.
+
+## Telas
+
+Login/Register · Painel (dashboard com CRI e alertas) · Recursos (+cadastro/validação/histórico) ·
+Mapa (Leaflet + PostGIS: recursos, malha IBGE, estações CEMADEN) · Necessidades · Solicitações · Organizações ·
+Voluntários · Territórios · Dados externos (fontes/importação/histórico) · Insights · Cenários.
+
+## Endpoints REST
+
+Documentação interativa: **http://localhost:8080/swagger-ui.html** (OpenAPI em `/v3/api-docs`).
+
+Resumo (`/api/v1`): `auth/*` (register, login, logout, me) · `usuarios` · `organizacoes` · `recursos`
+(+`/disponibilidade`, `/validar`, `/rejeitar`, `/historico`) · `necessidades` · `solicitacoes` · `voluntarios` ·
+`dashboard` · `auditoria` · `health` · **Etapa 3:** `fontes`, `importacoes` (+`/previa`), `territorios/*`
+(resumo, setores, geojson, estacoes) · **Etapa 4:** `analytics/cri`, `analytics/insights`, `cenarios`
+(+`/simular`).
+
+## Segurança e privacidade (LGPD)
+
+Sessão com cookie HttpOnly + CSRF por cookie; senhas com BCrypt; autorização por perfil (`@PreAuthorize`) e
+regras de dono nos serviços (organização só altera os próprios recursos); endereço/contato de solicitações
+visíveis apenas a quem atende; operações sensíveis auditadas (`auditoria_registro`); dados pessoais fora do
+dashboard e dos agregados; nenhum segredo no repositório.
 
 ## Estrutura
 
 ```
 src/main/java/br/com/blockready/
   config  controller  service  repository  model/entity  dto  mapper
-  exception  security  integration  analytics/strategy
+  exception  security  integration (ibge, cemaden, disasteratlas)  analytics (strategy)
 src/main/resources/
-  application.yml  logback-spring.xml  db/migration/
+  application.yml  logback-spring.xml  db/migration (V1..V8)
   static/ (assets, css, js, pages, components)
-docs/modelo-de-dados.md      # entidades previstas
+docs/  modelo-de-dados.md  diagrama-classes.md  dados-exemplo/
 ```
 
-Arquitetura em camadas (MVC). Os repositories Spring Data JPA exercem o papel de DAO.
-`analytics/strategy/AnalysisStrategy` prepara o padrão Strategy.
+Arquitetura em camadas (MVC); repositories Spring Data JPA no papel de DAO; Strategy em `analytics/strategy`;
+importadores desacoplados dos controllers em `integration`. UML completo em
+[docs/diagrama-classes.md](docs/diagrama-classes.md); modelo de dados em
+[docs/modelo-de-dados.md](docs/modelo-de-dados.md).
 
-## Banco de dados e migrations
+## Limitações conhecidas
 
-Flyway aplica `db/migration` na inicialização: `V1` PostGIS, `V2` tabelas-base (Etapa 1), `V3` usuários e organizações
-(e as 6 categorias de referência), `V4` recursos, subtipos e histórico de disponibilidade, `V5` necessidades, solicitações
-e voluntários, `V6` auditoria. Modelo completo em [docs/modelo-de-dados.md](docs/modelo-de-dados.md).
-
-## Primeiro acesso
-
-1. Defina `BOOTSTRAP_ADMIN_EMAIL` e `BOOTSTRAP_ADMIN_PASSWORD` no `.env` e suba a aplicação.
-2. Entre em `/login.html` com esse administrador e crie contas de **gestor** (`POST /api/v1/usuarios`).
-3. Moradores e organizações se cadastram em `/cadastro.html`. Uma organização só cadastra recursos depois de **aprovada** por um gestor.
-
-## Segurança
-
-- **Autenticação:** sessão HTTP (cookie `JSESSIONID`, HttpOnly, SameSite=Lax) com troca do id da sessão no login. Senhas com BCrypt (custo 12), entre 8 e 72 caracteres.
-- **CSRF:** o cookie `XSRF-TOKEN` é lido pelo JavaScript e enviado em `X-XSRF-TOKEN` nas requisições que alteram dados. Chamadas externas (curl) precisam enviar os dois.
-- **Autorização:** `@PreAuthorize` por perfil nos controllers e regra de dono nos serviços (uma organização só altera os próprios recursos).
-- **Dados pessoais:** endereço e nome do solicitante só aparecem para o próprio morador, para gestores/administradores e para a organização responsável pelo atendimento. Quem validou um recurso só é exibido a gestores, administradores e à organização dona.
-- **Auditoria:** validação/rejeição/desativação de recursos, decisões sobre organizações, mudanças de perfil e de ativação, atribuição de responsável e atendimentos. Consulta apenas por administradores.
-- **Fora desta etapa:** limite de tentativas de login, recuperação de senha e tela de administração de usuários (a API existe).
-
-## Perfis
-
-| Perfil | Pode |
-|---|---|
-| `MORADOR` | Criar conta, consultar recursos confirmados, registrar necessidades, acompanhar e cancelar as próprias solicitações, cadastrar disponibilidade como voluntário |
-| `ORGANIZACAO` | Gerir os dados da própria organização, cadastrar recursos (após aprovação), editar, atualizar disponibilidade e desativar **apenas os seus** recursos, consultar solicitações da categoria dos seus recursos e atendê-las |
-| `GESTOR` | Validar/rejeitar recursos, aprovar/rejeitar/suspender organizações, gerenciar qualquer recurso, consultar e atualizar solicitações, atribuir responsáveis, listar voluntários |
-| `ADMIN` | Tudo do gestor, mais usuários e permissões e registros de auditoria |
-
-## Regras de negócio
-
-- Recurso novo nasce **PENDENTE_VALIDACAO** e não é tratado como confirmado. Fluxo: `PENDENTE_VALIDACAO → VALIDADO | REJEITADO`; `INATIVO` por desativação. Se uma organização edita os dados de um recurso já validado, ele volta a pendente.
-- Capacidade disponível nunca excede a total; cada atualização gera um registro em `registro_disponibilidade`; as alterações ficam em `recurso_historico`.
-- `DELETE /recursos/{id}` **desativa** (não apaga), preservando histórico.
-- Solicitação: `ABERTA → EM_ANALISE → EM_ATENDIMENTO → ATENDIDA`, com `CANCELADA` possível até o atendimento. `ATENDIDA` exige o registro do atendimento. Cada transição grava `solicitacao_historico`.
-- Moradores só podem cancelar as próprias solicitações.
-
-## Endpoints REST
-
-Prefixo `/api/v1`. Erros seguem RFC 7807 (`400` validação com `campos`, `401`, `403`, `404`, `409`, `422` regra de negócio). Listas são paginadas (`page`, `size` ≤ 100).
-
-**Autenticação**
-
-| Método e rota | Acesso | Descrição |
-|---|---|---|
-| `POST /auth/register` | público | Cria conta `MORADOR` ou `ORGANIZACAO` (esta com objeto `organizacao`) |
-| `POST /auth/login` | público | Autentica e abre a sessão |
-| `POST /auth/logout` | autenticado | Encerra a sessão (204) |
-| `GET /auth/me` | autenticado | Usuário atual |
-
-**Usuários (ADMIN)**: `GET /usuarios` · `POST /usuarios` · `PATCH /usuarios/{id}/perfil` · `PATCH /usuarios/{id}/ativo`
-
-**Organizações**
-
-| Método e rota | Acesso |
-|---|---|
-| `GET /organizacoes?status=` | GESTOR, ADMIN |
-| `GET /organizacoes/minha` | ORGANIZACAO |
-| `GET /organizacoes/{id}` | dona, GESTOR, ADMIN |
-| `PUT /organizacoes/{id}` | dona, GESTOR, ADMIN |
-| `POST /organizacoes/{id}/aprovar` · `/rejeitar` · `/suspender` | GESTOR, ADMIN |
-
-**Recursos**
-
-| Método e rota | Acesso |
-|---|---|
-| `GET /recursos?categoria=&status=&busca=&lat=&lon=&raioKm=` | autenticado (escopo por perfil) |
-| `GET /recursos/{id}` | autenticado (pendentes só para staff e dona) |
-| `POST /recursos` | ORGANIZACAO (aprovada), GESTOR, ADMIN |
-| `PUT /recursos/{id}` | dona, GESTOR, ADMIN |
-| `PATCH /recursos/{id}/disponibilidade` | dona, GESTOR, ADMIN |
-| `POST /recursos/{id}/validar` · `/rejeitar` | GESTOR, ADMIN |
-| `DELETE /recursos/{id}` (desativa) | dona, GESTOR, ADMIN |
-| `GET /recursos/{id}/historico` · `/disponibilidades` | dona, GESTOR, ADMIN |
-
-O filtro por localização usa PostGIS (`ST_DWithin`); `lat`, `lon` e `raioKm` (até 200) devem vir juntos.
-
-**Necessidades e solicitações**
-
-| Método e rota | Acesso |
-|---|---|
-| `POST /necessidades` | MORADOR (abre a solicitação) |
-| `GET /solicitacoes?status=&categoria=&prioridade=` | autenticado (morador: as próprias; organização: da categoria dos seus recursos ou sob sua responsabilidade; staff: todas) |
-| `GET /solicitacoes/{id}` · `/historico` | quem pode ver a solicitação |
-| `PATCH /solicitacoes/{id}/status` | morador (só cancelar), organização, GESTOR, ADMIN |
-| `PATCH /solicitacoes/{id}/responsavel` | GESTOR, ADMIN |
-
-**Voluntários**: `GET /voluntarios/me` · `PUT /voluntarios/me` (qualquer usuário) · `GET /voluntarios` (GESTOR, ADMIN)
-
-**Outros**: `GET /dashboard` (contagens lidas do banco) · `GET /auditoria` (ADMIN) · `GET /health` (público)
-
-## Telas
-
-`/login.html`, `/cadastro.html`, `/index.html` (painel), `/pages/recursos.html`, `/pages/recurso-form.html`, `/pages/necessidades.html`, `/pages/solicitacoes.html`, `/pages/organizacoes.html`, `/pages/voluntarios.html`. A navegação muda conforme o perfil e todas consomem a API real.
+- As análises dependem dos dados importados/cadastrados; os parâmetros de demanda são premissas configuráveis.
+- Registros do Atlas têm abrangência municipal; medições do CEMADEN valem para o ponto da estação.
+- O mapa usa tiles do OpenStreetMap e Leaflet via CDN (requer internet para exibir o mapa).
+- Setores sem malha (WKT) não participam dos cruzamentos espaciais.

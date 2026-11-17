@@ -22,6 +22,16 @@ public interface RecursoRepository
     @Query("select distinct r.categoria from RecursoComunitario r where r.organizacao.id = :organizacaoId")
     List<CategoriaRecurso> categoriasDaOrganizacao(@Param("organizacaoId") Long organizacaoId);
 
+    /** Capacidade disponível agregada por categoria e unidade de medida (para o CRI, sem misturar escalas). */
+    @Query("""
+            select r.categoria, lower(r.unidadeMedida), sum(r.capacidadeDisponivel), count(r), max(r.atualizadoEm)
+            from RecursoComunitario r where r.status = :status
+            group by r.categoria, lower(r.unidadeMedida)
+            """)
+    List<Object[]> capacidadePorCategoriaEUnidade(@Param("status") StatusRecurso status);
+
+    long countByStatusAndAtualizadoEmBefore(StatusRecurso status, java.time.Instant limite);
+
     /** Filtro geográfico: ids dos recursos dentro do raio (em metros), usando a coluna geom do PostGIS. */
     @Query(nativeQuery = true, value = """
             select r.id from recurso_comunitario r

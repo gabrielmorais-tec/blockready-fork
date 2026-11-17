@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/components.css">
+<title>Dados externos · BLOCKREADY</title>
+</head>
+<body data-page="dados" data-title="Dados externos">
+<main id="content" class="content stack" hidden>
+
+  <section class="panel" aria-labelledby="h-fontes">
+    <h2 id="h-fontes">Fontes de dados (Data Sources)</h2>
+    <p class="panel-note">Fontes oficiais integradas por importação de arquivos públicos (CSV). A abrangência
+    geográfica de cada fonte limita como os dados são usados nas análises.</p>
+    <div id="erro-fontes"></div>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th>Fonte</th><th>Abrangência</th><th>Registros</th><th>Última importação</th><th>Colunas esperadas</th></tr></thead>
+        <tbody id="lista-fontes"><tr><td colspan="5">Carregando…</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="h-importar">
+    <h2 id="h-importar">Importar dados (Data Import)</h2>
+    <p class="panel-note">Envie o arquivo CSV da fonte selecionada. O sistema valida o formato, mostra uma
+    pré-visualização e rejeita arquivos já importados (controle de duplicidade por conteúdo).</p>
+    <div id="erro-importar"></div>
+    <form id="form-importar" class="filters">
+      <div class="field"><label for="i-fonte">Fonte</label><select class="select" id="i-fonte" required></select></div>
+      <div class="field"><label for="i-arquivo">Arquivo CSV</label><input class="input" id="i-arquivo" type="file" accept=".csv,text/csv" required></div>
+      <div class="field"><label for="i-periodo">Período de referência</label><input class="input" id="i-periodo" maxlength="60" placeholder="ex.: Censo 2022 / nov-2026"></div>
+      <div class="field"><label for="i-demo">Dados demonstrativos?</label><select class="select" id="i-demo"><option value="false">Não — dados oficiais</option><option value="true">Sim — demonstração/simulados</option></select></div>
+      <button class="btn btn-secondary" type="button" id="btn-previa">Pré-visualizar</button>
+      <button class="btn btn-primary" type="submit" id="btn-importar">Importar</button>
+    </form>
+    <div id="previa" hidden>
+      <h3>Pré-visualização</h3>
+      <p class="panel-note" id="previa-info"></p>
+      <div class="table-wrap"><table class="table"><thead id="previa-cab"></thead><tbody id="previa-linhas"></tbody></table></div>
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="h-historico">
+    <h2 id="h-historico">Histórico de importações (Import History)</h2>
+    <div id="erro-historico"></div>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th>Data</th><th>Fonte</th><th>Arquivo</th><th>Período</th><th>Processados</th><th>Rejeitados</th><th>Status</th><th>Por</th><th></th></tr></thead>
+        <tbody id="lista-historico"><tr><td colspan="9">Carregando…</td></tr></tbody>
+      </table>
+    </div>
+    <div class="pager" id="pager-historico"></div>
+  </section>
+
+</main>
+
+<dialog id="dlg-erros" aria-labelledby="erros-titulo">
+  <h2 id="erros-titulo">Detalhes da importação</h2>
+  <pre id="erros-texto" style="white-space:pre-wrap;max-height:50vh;overflow:auto"></pre>
+  <div class="form-actions"><button class="btn btn-secondary" type="button" data-fechar>Fechar</button></div>
+</dialog>
+
+<script src="/js/api.js"></script>
+<script src="/js/layout.js"></script>
+<script src="/js/dados.js"></script>
+</body>
+</html>
