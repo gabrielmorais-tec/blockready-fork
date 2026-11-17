@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/components.css">
+<title>Emergency Scenario · BLOCKREADY</title>
+</head>
+<body data-page="cenarios" data-title="Simulação de cenários (72h Planning)">
+<main id="content" class="content stack" hidden>
+
+  <div class="notice" role="note">
+    <p><strong>Ferramenta de planejamento.</strong> A simulação estima cobertura a partir de parâmetros
+    configuráveis — não é uma previsão exata de uma emergência real.</p>
+  </div>
+
+  <section class="panel" aria-labelledby="h-simular">
+    <h2 id="h-simular">Simular cenário</h2>
+    <div id="erro-simular"></div>
+    <form id="form-cenario">
+      <div class="filters">
+        <div class="field"><label for="c-nome">Nome do cenário</label><input class="input" id="c-nome" maxlength="160" required placeholder="ex.: Enchente 72h — 10% afetados"></div>
+        <div class="field"><label for="c-tipo">Tipo de emergência</label><select class="select" id="c-tipo"></select></div>
+        <div class="field"><label for="c-horizonte">Horizonte (horas, até 72)</label><input class="input" id="c-horizonte" type="number" min="1" max="72" value="72" required></div>
+        <div class="field"><label for="c-afetados">População afetada (%)</label><input class="input" id="c-afetados" type="number" min="0.1" max="100" step="0.1" value="10" required></div>
+      </div>
+      <details>
+        <summary>Parâmetros de demanda (padrões de planejamento, configuráveis)</summary>
+        <div class="filters">
+          <div class="field"><label for="p-agua">Água (L/pessoa/dia)</label><input class="input" id="p-agua" type="number" min="0" max="100" step="0.1" placeholder="3"></div>
+          <div class="field"><label for="p-refeicoes">Refeições (por pessoa/dia)</label><input class="input" id="p-refeicoes" type="number" min="0" max="20" step="0.1" placeholder="2"></div>
+          <div class="field"><label for="p-desabrigados">Desabrigados (% dos afetados)</label><input class="input" id="p-desabrigados" type="number" min="0" max="100" step="0.1" placeholder="30"></div>
+          <div class="field"><label for="p-energia">Energia (% dos afetados)</label><input class="input" id="p-energia" type="number" min="0" max="100" step="0.1" placeholder="20"></div>
+          <div class="field"><label for="p-comunicacao">Comunicação (% dos afetados)</label><input class="input" id="p-comunicacao" type="number" min="0" max="100" step="0.1" placeholder="20"></div>
+          <div class="field"><label for="p-saude">Saúde (% dos afetados)</label><input class="input" id="p-saude" type="number" min="0" max="100" step="0.1" placeholder="5"></div>
+        </div>
+      </details>
+      <div class="form-actions">
+        <button class="btn btn-primary" type="submit">Simular</button>
+        <button class="btn btn-secondary" type="button" id="btn-salvar" disabled>Salvar cenário</button>
+      </div>
+    </form>
+  </section>
+
+  <section id="resultado" class="stack" hidden>
+    <h2>Resultado da simulação</h2>
+    <p class="panel-note" id="resultado-info"></p>
+    <div class="grid-2" id="resultado-cards"></div>
+    <section class="panel"><h3>Cobertura por categoria</h3><div id="resultado-grafico" class="stack"></div></section>
+    <section class="panel">
+      <h3>Prioridades recomendadas</h3>
+      <div class="table-wrap">
+        <table class="table">
+          <thead><tr><th>#</th><th>Categoria</th><th>Cobertura</th><th>Déficit</th><th>Ação recomendada</th><th>Justificativa</th></tr></thead>
+          <tbody id="resultado-recomendacoes"></tbody>
+        </table>
+      </div>
+    </section>
+  </section>
+
+  <section class="panel" aria-labelledby="h-salvos">
+    <h2 id="h-salvos">Cenários salvos (comparação)</h2>
+    <div id="erro-salvos"></div>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th>Nome</th><th>Tipo</th><th>Horizonte</th><th>Afetados</th><th>Estratégia</th><th>Criado</th><th></th></tr></thead>
+        <tbody id="lista-salvos"><tr><td colspan="7">Carregando…</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+<script src="/js/api.js"></script>
+<script src="/js/layout.js"></script>
+<script src="/js/cenarios.js"></script>
+</body>
+</html>

@@ -38,10 +38,26 @@ window.BR = window.BR || {};
     return dados;
   }
 
+  /** Envio multipart (upload de arquivos) com o mesmo tratamento de erros e CSRF. */
+  async function requestForm(caminho, formData) {
+    const headers = { Accept: 'application/json' };
+    const token = cookie('XSRF-TOKEN');
+    if (token) { headers['X-XSRF-TOKEN'] = token; }
+    const res = await fetch(BASE + caminho, {
+      method: 'POST', headers, credentials: 'same-origin', body: formData
+    });
+    let dados = null;
+    try { dados = await res.json(); } catch (_) { /* sem corpo JSON */ }
+    if (res.status === 401 && !BR.publicPage) { window.location.href = '/login.html'; }
+    if (!res.ok) { throw new ApiError(res.status, dados); }
+    return dados;
+  }
+
   BR.ApiError = ApiError;
   BR.api = {
     get: (c) => request('GET', c),
     post: (c, b) => request('POST', c, b),
+    postForm: (c, fd) => requestForm(c, fd),
     put: (c, b) => request('PUT', c, b),
     patch: (c, b) => request('PATCH', c, b),
     del: (c) => request('DELETE', c),
@@ -69,16 +85,21 @@ window.BR = window.BR || {};
     statusRecurso: { PENDENTE_VALIDACAO: 'Pendente de validação', VALIDADO: 'Confirmado', REJEITADO: 'Rejeitado', INATIVO: 'Inativo' },
     statusSolicitacao: { ABERTA: 'Aberta', EM_ANALISE: 'Em análise', EM_ATENDIMENTO: 'Em atendimento', ATENDIDA: 'Atendida', CANCELADA: 'Cancelada' },
     aprovacao: { PENDENTE: 'Pendente', APROVADA: 'Aprovada', REJEITADA: 'Rejeitada', SUSPENSA: 'Suspensa' },
-    tipoOrg: { ONG: 'ONG', ASSOCIACAO: 'Associação', COOPERATIVA: 'Cooperativa', INSTITUICAO_PUBLICA: 'Instituição pública', EMPRESA: 'Empresa', OUTRA: 'Outra' }
+    tipoOrg: { ONG: 'ONG', ASSOCIACAO: 'Associação', COOPERATIVA: 'Cooperativa', INSTITUICAO_PUBLICA: 'Instituição pública', EMPRESA: 'Empresa', OUTRA: 'Outra' },
+    statusImportacao: { PROCESSANDO: 'Processando', CONCLUIDA: 'Concluída', CONCLUIDA_COM_REJEICOES: 'Concluída com rejeições', FALHA: 'Falha' },
+    situacaoCobertura: { SUFICIENTE: 'Suficiente', PARCIAL: 'Parcial', INSUFICIENTE: 'Insuficiente', SEM_DADOS: 'Sem dados' },
+    tipoEmergencia: { ENCHENTE: 'Enchente', TEMPESTADE_INTENSA: 'Tempestade intensa', INTERRUPCAO_ENERGIA: 'Interrupção de energia', INTERRUPCAO_SERVICOS: 'Interrupção de serviços essenciais' }
   };
   BR.rotulo = (grupo, chave) => (BR.labels[grupo] && BR.labels[grupo][chave]) || chave || '—';
 
   const CLASSES = {
-    VALIDADO: 'ok', APROVADA: 'ok', ATENDIDA: 'ok',
+    VALIDADO: 'ok', APROVADA: 'ok', ATENDIDA: 'ok', CONCLUIDA: 'ok', SUFICIENTE: 'ok',
     PENDENTE_VALIDACAO: 'alert', PENDENTE: 'alert', ABERTA: 'alert', ALTA: 'alert',
+    CONCLUIDA_COM_REJEICOES: 'alert', PARCIAL: 'alert',
     CRITICA: 'danger', REJEITADO: 'danger', REJEITADA: 'danger', SUSPENSA: 'danger',
+    FALHA: 'danger', INSUFICIENTE: 'danger',
     EM_ANALISE: 'info', EM_ATENDIMENTO: 'info', MEDIA: 'info',
-    INATIVO: 'neutral', CANCELADA: 'neutral', BAIXA: 'neutral'
+    INATIVO: 'neutral', CANCELADA: 'neutral', BAIXA: 'neutral', SEM_DADOS: 'neutral'
   };
   BR.badge = (grupo, chave) =>
     `<span class="badge badge-${CLASSES[chave] || 'neutral'}">${BR.esc(BR.rotulo(grupo, chave))}</span>`;

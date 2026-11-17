@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/components.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<title>Resource Map · BLOCKREADY</title>
+<style>
+  #mapa { height: 70vh; min-height: 420px; border-radius: var(--radius); border: 1px solid var(--gray-200); }
+  .legenda { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; }
+  .legenda span { display: inline-flex; align-items: center; gap: .35rem; font-size: var(--text-sm); color: var(--gray-700); }
+  .ponto { width: .8rem; height: .8rem; border-radius: 50%; display: inline-block; border: 2px solid #fff; box-shadow: 0 0 0 1px var(--gray-300); }
+</style>
+</head>
+<body data-page="mapa" data-title="Mapa de recursos (Resource Map)">
+<main id="content" class="content stack" hidden>
+
+  <section class="panel">
+    <form class="filters" id="filtros">
+      <div class="field"><label for="m-cat">Categoria</label><select class="select" id="m-cat"></select></div>
+      <div class="field" id="campo-status" hidden><label for="m-status">Status</label><select class="select" id="m-status"></select></div>
+      <label style="display:flex;align-items:center;gap:.4rem"><input type="checkbox" id="m-setores" checked> Malha dos setores (IBGE)</label>
+      <label style="display:flex;align-items:center;gap:.4rem"><input type="checkbox" id="m-estacoes" checked> Estações CEMADEN (72 h)</label>
+      <button class="btn btn-primary" type="submit">Aplicar filtros</button>
+    </form>
+    <div id="erro-mapa"></div>
+    <div id="mapa" role="region" aria-label="Mapa dos recursos comunitários"></div>
+    <div class="legenda" style="margin-top:.75rem">
+      <strong>Legenda:</strong>
+      <span><span class="ponto" style="background:#1f6fe5"></span> Água</span>
+      <span><span class="ponto" style="background:#8a4fd8"></span> Abrigos</span>
+      <span><span class="ponto" style="background:#ff8a1f"></span> Energia</span>
+      <span><span class="ponto" style="background:#138a5b"></span> Alimentação</span>
+      <span><span class="ponto" style="background:#19c2e3"></span> Comunicação</span>
+      <span><span class="ponto" style="background:#c2331f"></span> Saúde</span>
+      <span><span class="ponto" style="background:#0a1a33"></span> Estação CEMADEN</span>
+    </div>
+    <p class="panel-note" id="mapa-nota">Carregando…</p>
+  </section>
+
+</main>
+<script src="/js/api.js"></script>
+<script src="/js/layout.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="/js/mapa.js"></script>
+</body>
+</html>

@@ -10,8 +10,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import br.com.blockready.model.enums.AbrangenciaFonte;
 import br.com.blockready.model.enums.CategoriaRecurso;
 import br.com.blockready.model.enums.Perfil;
+import br.com.blockready.model.enums.StatusImportacao;
 import br.com.blockready.model.enums.Prioridade;
 import br.com.blockready.model.enums.StatusAprovacao;
 import br.com.blockready.model.enums.StatusRecurso;
@@ -85,4 +87,26 @@ public final class Responses {
             long solicitacoesEmAberto, long solicitacoesAtendidas, long voluntariosAtivos,
             long organizacoesPendentes, Map<String, Long> recursosValidadosPorCategoria,
             Map<String, Long> solicitacoesPorStatus) { }
+
+    // ---- Etapa 3: integração de dados externos ----
+
+    public record FonteExternaResponse(Long id, String codigo, String nome, String descricao, String urlBase,
+            AbrangenciaFonte abrangencia, Instant ultimaImportacao, long totalRegistros,
+            String colunasEsperadas) { }
+
+    public record ImportacaoResponse(Long id, String fonteCodigo, String fonteNome, String nomeArquivo,
+            String periodoReferencia, boolean demonstrativo, StatusImportacao status, int totalProcessados,
+            int totalRejeitados, String erros, String importadoPorNome, Instant criadoEm) { }
+
+    public record PreviewImportacaoResponse(List<String> colunas, List<Map<String, String>> linhas,
+            int totalLinhas, String delimitador) { }
+
+    /** {@code demonstrativo} identifica registros vindos de importações marcadas como demonstração. */
+    public record SetorCensitarioResponse(Long id, String codigoSetor, String municipio, String uf,
+            int populacao, int domicilios, BigDecimal areaKm2, boolean possuiGeometria,
+            boolean demonstrativo, Instant atualizadoEm) { }
+
+    public record TerritorioResumoResponse(long setores, long populacaoTotal, long domiciliosTotal,
+            long setoresComGeometria, long estacoesMeteorologicas, Instant ultimaMedicao,
+            long ocorrenciasDesastre) { }
 }

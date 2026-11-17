@@ -35,8 +35,49 @@ BR.ready.then(async (me) => {
       `<section class="panel"><h2>Recursos confirmados por categoria</h2><ul class="data-list">${lista(d.recursosValidadosPorCategoria, 'categoria')}</ul></section>` +
       `<section class="panel"><h2>Solicitações por status</h2><ul class="data-list">${lista(d.solicitacoesPorStatus, 'statusSolicitacao')}</ul></section>`;
     document.getElementById('dash-fonte').textContent = 'Contagens lidas do banco de dados em ' + BR.data(d.geradoEm) + '.';
+
+    // Alertas informativos derivados dos registros do banco.
+    const alertas = [];
+    if (d.recursosPendentesValidacao > 0) { alertas.push([d.recursosPendentesValidacao + ' recurso(s) aguardando validação', 'alert']); }
+    if (d.solicitacoesEmAberto > 0) { alertas.push([d.solicitacoesEmAberto + ' solicitação(ões) em aberto', 'alert']); }
+    if (d.organizacoesPendentes > 0) { alertas.push([d.organizacoesPendentes + ' organização(ões) aguardando aprovação', 'info']); }
+    window.__alertasBase = alertas;
   } catch (e) {
     stats.innerHTML = '';
     BR.mostrarErro(document.getElementById('dash-erro'), e);
   }
+
+  // Community Resilience Index agregada (dados do backend; sem números estáticos).
+  const corSituacao = { SUFICIENTE: 'var(--ok)', PARCIAL: 'var(--alert)', INSUFICIENTE: 'var(--danger)', SEM_DADOS: 'var(--gray-300)' };
+  const alertasEl = document.getElementById('alertas');
+  const alertas = window.__alertasBase || [];
+  try {
+    const cri = await BR.api.get('/analytics/cri');
+    document.getElementById('cri-resumo').innerHTML = cri.categorias.map((c) => {
+      const pct = c.percentual == null ? 0 : Math.min(Number(c.percentual), 100);
+      const rotulo = c.percentual == null ? 'Sem dados' : BR.num(c.percentual) + '%';
+      return `<div>
+        <div style="display:flex;justify-content:space-between;gap:.5rem">
+          <span>${BR.esc(BR.rotulo('categoria', c.categoria))}</span>
+          <span>${rotulo} ${BR.badge('situacaoCobertura', c.situacao)}</span>
+        </div>
+        <div style="background:var(--gray-100);border-radius:999px;height:.6rem;overflow:hidden" role="img"
+             aria-label="Cobertura de ${BR.esc(BR.rotulo('categoria', c.categoria))}: ${rotulo}">
+          <div style="width:${pct}%;height:100%;background:${corSituacao[c.situacao] || 'var(--blue)'}"></div>
+        </div></div>`;
+    }).join('');
+    document.getElementById('cri-nota').textContent = cri.dadosSuficientes
+      ? `Cobertura estimada para ${BR.num(cri.populacaoBase)} pessoas (IBGE) em ${cri.horizonteHoras} h. ` +
+        'Cobertura de 100% não garante a segurança da comunidade.'
+      : 'Sem dados do IBGE importados: o CRI aparece como SEM_DADOS. Gestores podem importar na tela Dados externos.';
+    cri.categorias.filter((c) => c.situacao === 'INSUFICIENTE').forEach((c) =>
+      alertas.push(['Cobertura insuficiente de ' + BR.rotulo('categoria', c.categoria) +
+        (c.insuficiencia != null ? ' (déficit de ' + BR.num(c.insuficiencia) + ' ' + c.unidade + ')' : ''), 'danger']));
+    if (!cri.dadosSuficientes) { alertas.push(['CRI sem base populacional: importe os dados do IBGE', 'info']); }
+  } catch (e) {
+    document.getElementById('cri-nota').textContent = 'Não foi possível calcular o CRI agora.';
+  }
+  alertasEl.innerHTML = alertas.length
+    ? alertas.map(([texto, classe]) => `<li><span class="label">${BR.esc(texto)}</span><span class="badge badge-${classe}">Atenção</span></li>`).join('')
+    : '<li><span class="label">Nenhum alerta no momento</span><span class="badge badge-ok">Tudo em dia</span></li>';
 });

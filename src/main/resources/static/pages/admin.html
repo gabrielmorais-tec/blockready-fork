@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/components.css">
+<title>Administração · BLOCKREADY</title>
+</head>
+<body data-page="admin" data-title="Administração">
+<main id="content" class="content stack" hidden>
+
+  <section class="panel" aria-labelledby="h-novo">
+    <h2 id="h-novo">Criar usuário</h2>
+    <p class="panel-note">Use para criar contas de gestor comunitário ou outros administradores.</p>
+    <div id="erro-novo"></div>
+    <form id="form-novo" class="filters">
+      <div class="field"><label for="n-nome">Nome</label><input class="input" id="n-nome" maxlength="120" required></div>
+      <div class="field"><label for="n-email">E-mail</label><input class="input" id="n-email" type="email" maxlength="160" required></div>
+      <div class="field"><label for="n-senha">Senha (8–72)</label><input class="input" id="n-senha" type="password" minlength="8" maxlength="72" required></div>
+      <div class="field"><label for="n-telefone">Telefone</label><input class="input" id="n-telefone" maxlength="30"></div>
+      <div class="field"><label for="n-perfil">Perfil</label><select class="select" id="n-perfil"></select></div>
+      <button class="btn btn-primary" type="submit">Criar</button>
+    </form>
+  </section>
+
+  <section class="panel" aria-labelledby="h-usuarios">
+    <h2 id="h-usuarios">Usuários e permissões</h2>
+    <div id="erro-usuarios"></div>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th>Nome</th><th>E-mail</th><th>Perfil</th><th>Situação</th><th>Criado</th><th>Ações</th></tr></thead>
+        <tbody id="lista-usuarios"><tr><td colspan="6">Carregando…</td></tr></tbody>
+      </table>
+    </div>
+    <div class="pager" id="pager-usuarios"></div>
+  </section>
+
+  <section class="panel" aria-labelledby="h-auditoria">
+    <h2 id="h-auditoria">Registros de auditoria</h2>
+    <p class="panel-note">Operações sensíveis registradas pelo sistema (validações, importações, permissões…).</p>
+    <div id="erro-auditoria"></div>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th>Data</th><th>Usuário (id)</th><th>Ação</th><th>Entidade</th><th>Detalhes</th></tr></thead>
+        <tbody id="lista-auditoria"><tr><td colspan="5">Carregando…</td></tr></tbody>
+      </table>
+    </div>
+    <div class="pager" id="pager-auditoria"></div>
+  </section>
+
+</main>
+<script src="/js/api.js"></script>
+<script src="/js/layout.js"></script>
+<script src="/js/admin.js"></script>
+</body>
+</html>
