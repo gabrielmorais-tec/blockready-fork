@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/components.css">
+<title>Organizações · BLOCKREADY</title>
+</head>
+<body data-page="organizacoes" data-title="Organizações parceiras">
+<main id="content" class="content stack" hidden>
+  <div id="erro"></div>
+
+  <section class="panel" id="painel-staff" hidden>
+    <h2>Administrar organizações</h2>
+    <div class="filters"><div class="field"><label for="filtro-status">Status de aprovação</label><select class="select" id="filtro-status"></select></div></div>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th>Organização</th><th>Responsável e contato</th><th>Localização</th><th>Aprovação</th><th>Ações</th></tr></thead>
+        <tbody id="lista"><tr><td colspan="5">Carregando…</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel" id="painel-org" hidden>
+    <h2>Minha organização</h2>
+    <p class="panel-note">Situação da aprovação: <span id="status-org"></span></p>
+    <div class="notice" id="aviso-aprovacao" hidden style="margin:1rem 0"><p>Você poderá cadastrar recursos depois que um gestor comunitário aprovar sua organização.</p></div>
+    <form id="form-org">
+      <div class="form-grid">
+        <div class="field"><label for="nome">Nome</label><input class="input" id="nome" name="nome" required maxlength="160"></div>
+        <div class="field"><label for="tipo">Categoria</label><select class="select" id="tipo" name="tipo"></select></div>
+        <div class="field full"><label for="descricao">Descrição</label><textarea class="textarea" id="descricao" name="descricao" maxlength="2000"></textarea></div>
+        <div class="field"><label for="responsavelNome">Responsável</label><input class="input" id="responsavelNome" name="responsavelNome" required maxlength="120"></div>
+        <div class="field"><label for="contatoEmail">E-mail de contato</label><input class="input" id="contatoEmail" name="contatoEmail" type="email" maxlength="160"></div>
+        <div class="field"><label for="contatoTelefone">Telefone de contato</label><input class="input" id="contatoTelefone" name="contatoTelefone" maxlength="30"></div>
+        <div class="field"><label for="endereco">Endereço</label><input class="input" id="endereco" name="endereco" maxlength="300"></div>
+        <div class="field"><label for="latitude">Latitude</label><input class="input" id="latitude" name="latitude" type="number" step="any" min="-90" max="90"></div>
+        <div class="field"><label for="longitude">Longitude</label><input class="input" id="longitude" name="longitude" type="number" step="any" min="-180" max="180"></div>
+      </div>
+      <div class="form-actions"><button class="btn btn-primary" type="submit">Salvar dados</button></div>
+    </form>
+  </section>
+</main>
+<script src="/js/api.js"></script>
+<script src="/js/layout.js"></script>
+<script src="/js/organizacoes.js"></script>
+</body>
+</html>

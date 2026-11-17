@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/components.css">
+<title>Recursos · BLOCKREADY</title>
+</head>
+<body data-page="recursos" data-title="Recursos comunitários">
+<main id="content" class="content stack" hidden>
+  <section class="panel">
+    <div style="display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:flex-start">
+      <div><h2>Consultar recursos</h2>
+      <p class="panel-note">Apenas recursos <strong>confirmados</strong> são tratados como disponíveis. Recursos pendentes de validação aparecem identificados.</p></div>
+      <a class="btn btn-primary" id="novo" href="/pages/recurso-form.html" hidden>Cadastrar recurso</a>
+    </div>
+    <form class="filters" id="filtros">
+      <div class="field"><label for="f-cat">Categoria</label><select class="select" id="f-cat" name="categoria"></select></div>
+      <div class="field"><label for="f-status">Status</label><select class="select" id="f-status" name="status"></select></div>
+      <div class="field"><label for="f-busca">Nome</label><input class="input" id="f-busca" name="busca" maxlength="80"></div>
+      <div class="field"><label for="f-lat">Latitude</label><input class="input" id="f-lat" name="lat" type="number" step="any" min="-90" max="90"></div>
+      <div class="field"><label for="f-lon">Longitude</label><input class="input" id="f-lon" name="lon" type="number" step="any" min="-180" max="180"></div>
+      <div class="field"><label for="f-raio">Raio (km)</label><input class="input" id="f-raio" name="raio" type="number" step="any" min="0.1" max="200"></div>
+      <button class="btn btn-secondary" type="button" id="geo">Usar minha localização</button>
+      <button class="btn btn-primary" type="submit">Filtrar</button>
+      <button class="btn btn-secondary" type="button" id="limpar">Limpar</button>
+    </form>
+    <div id="erro"></div>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th>Recurso</th><th>Categoria</th><th>Situação</th><th>Disponibilidade</th><th>Organização</th><th>Atualizado</th><th>Ações</th></tr></thead>
+        <tbody id="lista"><tr><td colspan="7">Carregando…</td></tr></tbody>
+      </table>
+    </div>
+    <div class="pager" id="pager"></div>
+  </section>
+</main>
+
+<dialog id="dlg-disp" aria-labelledby="disp-titulo">
+  <h2 id="disp-titulo">Atualizar disponibilidade</h2>
+  <div id="erro-disp"></div>
+  <form id="form-disp">
+    <div class="field"><label for="d-total">Capacidade total</label><input class="input" id="d-total" name="total" type="number" min="0" step="0.01" required></div>
+    <div class="field"><label for="d-disp">Capacidade disponível</label><input class="input" id="d-disp" name="disponivel" type="number" min="0" step="0.01" required></div>
+    <div class="field"><label for="d-obs">Observação</label><input class="input" id="d-obs" name="observacao" maxlength="500"></div>
+    <div class="form-actions"><button class="btn btn-primary" type="submit">Salvar</button><button class="btn btn-secondary" type="button" data-fechar>Cancelar</button></div>
+  </form>
+</dialog>
+
+<dialog id="dlg-hist" aria-labelledby="hist-titulo">
+  <h2 id="hist-titulo">Histórico do recurso</h2>
+  <h3>Alterações</h3><ul class="timeline" id="hist-lista"></ul>
+  <h3>Disponibilidade registrada</h3><ul class="timeline" id="disp-lista"></ul>
+  <div class="form-actions"><button class="btn btn-secondary" type="button" data-fechar>Fechar</button></div>
+</dialog>
+<script src="/js/api.js"></script>
+<script src="/js/layout.js"></script>
+<script src="/js/recursos.js"></script>
+</body>
+</html>

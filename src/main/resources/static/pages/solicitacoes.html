@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/components.css">
+<title>Solicitações · BLOCKREADY</title>
+</head>
+<body data-page="solicitacoes" data-title="Gestão de solicitações">
+<main id="content" class="content stack" hidden>
+  <section class="panel">
+    <h2>Solicitações</h2>
+    <p class="panel-note">Fluxo: Aberta → Em análise → Em atendimento → Atendida. Cada mudança fica registrada no histórico.</p>
+    <form class="filters" id="filtros">
+      <div class="field"><label for="f-status">Status</label><select class="select" id="f-status" name="status"></select></div>
+      <div class="field"><label for="f-cat">Categoria</label><select class="select" id="f-cat" name="categoria"></select></div>
+      <div class="field"><label for="f-prio">Prioridade</label><select class="select" id="f-prio" name="prioridade"></select></div>
+      <button class="btn btn-primary" type="submit">Filtrar</button>
+      <button class="btn btn-secondary" type="button" id="limpar">Limpar</button>
+    </form>
+    <div id="erro"></div>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th>Solicitação</th><th>Categoria</th><th>Descrição</th><th>Prioridade</th><th>Status</th><th>Ações</th></tr></thead>
+        <tbody id="lista"><tr><td colspan="6">Carregando…</td></tr></tbody>
+      </table>
+    </div>
+    <div class="pager" id="pager"></div>
+  </section>
+</main>
+
+<dialog id="dlg-status" aria-labelledby="status-titulo">
+  <h2 id="status-titulo">Atualizar status</h2>
+  <div id="erro-status"></div>
+  <form id="form-status">
+    <div class="field" id="bloco-atendimento" hidden><label for="s-reg">Atendimento realizado</label><textarea class="textarea" id="s-reg" name="registro" maxlength="2000" placeholder="Descreva o que foi entregue ou feito"></textarea></div>
+    <div class="field"><label for="s-obs">Observação (opcional)</label><input class="input" id="s-obs" name="observacao" maxlength="1000"></div>
+    <div class="form-actions"><button class="btn btn-primary" type="submit">Confirmar</button><button class="btn btn-secondary" type="button" data-fechar>Cancelar</button></div>
+  </form>
+</dialog>
+<dialog id="dlg-hist" aria-labelledby="hist-titulo">
+  <h2 id="hist-titulo">Histórico</h2>
+  <ul class="timeline" id="hist-lista"></ul>
+  <div class="form-actions"><button class="btn btn-secondary" type="button" data-fechar>Fechar</button></div>
+</dialog>
+<script src="/js/api.js"></script>
+<script src="/js/layout.js"></script>
+<script src="/js/solicitacoes.js"></script>
+</body>
+</html>

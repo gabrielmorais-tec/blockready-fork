@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/components.css">
+<title>Voluntários · BLOCKREADY</title>
+</head>
+<body data-page="voluntarios" data-title="Voluntários">
+<main id="content" class="content stack" hidden>
+  <section class="panel">
+    <h2>Minha disponibilidade como voluntário</h2>
+    <p class="panel-note">Seu contato só é visto por gestores comunitários e administradores.</p>
+    <div id="erro"></div>
+    <form id="form-vol">
+      <div class="field"><label for="habilidades">Habilidades</label><textarea class="textarea" id="habilidades" name="habilidades" required maxlength="1000" placeholder="Primeiros socorros, transporte, cozinha…"></textarea></div>
+      <div class="field"><label for="disponibilidade">Quando posso ajudar</label><input class="input" id="disponibilidade" name="disponibilidade" required maxlength="500" placeholder="Fins de semana, à noite…"></div>
+      <label class="check"><input type="checkbox" name="ativo" checked> Estou disponível no momento</label>
+      <div class="form-actions"><button class="btn btn-primary" type="submit">Salvar</button></div>
+    </form>
+  </section>
+
+  <section class="panel" id="painel-staff" hidden>
+    <h2>Voluntários cadastrados</h2>
+    <div id="erro-lista"></div>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th>Voluntário</th><th>Habilidades</th><th>Disponibilidade</th><th>Situação</th></tr></thead>
+        <tbody id="lista"><tr><td colspan="4">Carregando…</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+<script src="/js/api.js"></script>
+<script src="/js/layout.js"></script>
+<script src="/js/voluntarios.js"></script>
+</body>
+</html>

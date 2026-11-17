@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/components.css">
+<title>Cadastro de recurso · BLOCKREADY</title>
+</head>
+<body data-page="recursos" data-title="Recursos comunitários">
+<main id="content" class="content" hidden>
+  <section class="panel">
+    <h2 id="titulo-form">Cadastrar recurso</h2>
+    <p class="panel-note">Todo recurso novo fica pendente até ser validado por um gestor comunitário.</p>
+    <div id="aviso-edicao" class="notice" hidden style="margin:1rem 0"><p>Categoria e capacidades não mudam aqui. Para alterar a disponibilidade, use <strong>Disponibilidade</strong> na lista de recursos.</p></div>
+    <div id="aviso-revalidacao" class="notice" hidden style="margin:1rem 0"><p>Ao salvar, um recurso já confirmado volta a ficar pendente de validação.</p></div>
+    <div id="erro"></div>
+    <form id="form-recurso">
+      <div class="form-grid">
+        <div class="field full" id="bloco-org" hidden><label for="organizacaoId">Organização responsável</label><select class="select" id="organizacaoId" name="organizacaoId"></select></div>
+        <div class="field"><label for="nome">Nome</label><input class="input" id="nome" name="nome" required maxlength="160"></div>
+        <div class="field"><label for="categoria">Categoria</label><select class="select" id="categoria" name="categoria"></select></div>
+        <div class="field full"><label for="descricao">Descrição</label><textarea class="textarea" id="descricao" name="descricao" maxlength="2000"></textarea></div>
+        <div class="field full"><label for="endereco">Localização (endereço)</label><input class="input" id="endereco" name="endereco" required maxlength="300"></div>
+        <div class="field"><label for="latitude">Latitude</label><input class="input" id="latitude" name="latitude" type="number" step="any" min="-90" max="90" required></div>
+        <div class="field"><label for="longitude">Longitude</label><input class="input" id="longitude" name="longitude" type="number" step="any" min="-180" max="180" required></div>
+        <div class="field"><label for="capacidadeTotal">Capacidade total</label><input class="input" id="capacidadeTotal" name="capacidadeTotal" type="number" step="0.01" min="0" required></div>
+        <div class="field"><label for="capacidadeDisponivel">Capacidade disponível</label><input class="input" id="capacidadeDisponivel" name="capacidadeDisponivel" type="number" step="0.01" min="0" required></div>
+        <div class="field"><label for="unidadeMedida">Unidade de medida</label><input class="input" id="unidadeMedida" name="unidadeMedida" required maxlength="30" placeholder="litros, vagas, kWh, refeições…"></div>
+        <div class="field"><label for="horarioFuncionamento">Horário de funcionamento</label><input class="input" id="horarioFuncionamento" name="horarioFuncionamento" maxlength="200"></div>
+        <div class="field full"><label class="check"><input type="checkbox" id="acessivel" name="acessivel"> Local acessível</label>
+          <input class="input" id="acessibilidadeDescricao" name="acessibilidadeDescricao" maxlength="300" placeholder="Detalhes de acessibilidade (rampa, banheiro adaptado…)" aria-label="Detalhes de acessibilidade"></div>
+      </div>
+
+      <fieldset class="group" data-cat="AGUA" hidden><legend>Ponto de água</legend>
+        <label class="check"><input type="checkbox" name="potavel"> Água potável</label>
+        <div class="field"><label for="tipoFonteAgua">Tipo de fonte</label><input class="input" id="tipoFonteAgua" name="tipoFonteAgua" maxlength="80"></div></fieldset>
+      <fieldset class="group" data-cat="ABRIGO" hidden><legend>Abrigo</legend>
+        <label class="check"><input type="checkbox" name="aceitaAnimais"> Aceita animais</label>
+        <label class="check"><input type="checkbox" name="possuiRefeitorio"> Possui refeitório</label></fieldset>
+      <fieldset class="group" data-cat="ENERGIA" hidden><legend>Ponto de energia</legend>
+        <div class="field"><label for="tipoFonteEnergia">Tipo de fonte</label><input class="input" id="tipoFonteEnergia" name="tipoFonteEnergia" maxlength="80" placeholder="gerador, painel solar…"></div>
+        <label class="check"><input type="checkbox" name="permiteCarregarDispositivos"> Permite carregar dispositivos</label></fieldset>
+      <fieldset class="group" data-cat="ALIMENTACAO" hidden><legend>Ponto de alimentos</legend>
+        <label class="check"><input type="checkbox" name="refrigeracao"> Possui refrigeração</label>
+        <div class="field"><label for="tipoAlimento">Tipo de alimento</label><input class="input" id="tipoAlimento" name="tipoAlimento" maxlength="80"></div></fieldset>
+
+      <div class="form-actions"><button class="btn btn-primary" type="submit">Salvar</button><a class="btn btn-secondary" href="/pages/recursos.html">Voltar</a></div>
+    </form>
+  </section>
+</main>
+<script src="/js/api.js"></script>
+<script src="/js/layout.js"></script>
+<script src="/js/recurso-form.js"></script>
+</body>
+</html>

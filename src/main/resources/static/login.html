@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/components.css">
+<title>Entrar · BLOCKREADY</title>
+</head>
+<body data-public="true">
+<div class="auth-wrap">
+  <main class="auth-card">
+    <div class="brand"><img src="/assets/logo.svg" alt="" width="36" height="36"><strong>BLOCKREADY</strong></div>
+    <p class="slogan">Stronger Neighborhoods. Safer Futures.</p>
+    <h1>Entrar</h1>
+    <div id="aviso" class="notice" hidden style="margin-bottom:1rem"><p>Cadastro concluído. Entre com seu e-mail e senha.</p></div>
+    <div id="erro"></div>
+    <form id="form-login">
+      <div class="field"><label for="email">E-mail</label><input class="input" id="email" name="email" type="email" autocomplete="username" required maxlength="160"></div>
+      <div class="field"><label for="senha">Senha</label><input class="input" id="senha" name="senha" type="password" autocomplete="current-password" required maxlength="72"></div>
+      <div class="form-actions"><button class="btn btn-primary" type="submit">Entrar</button><a class="btn btn-secondary" href="/cadastro.html">Criar conta</a></div>
+    </form>
+  </main>
+</div>
+<script src="/js/api.js"></script>
+<script src="/js/layout.js"></script>
+<script src="/js/login.js"></script>
+</body>
+</html>

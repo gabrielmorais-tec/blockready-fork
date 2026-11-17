@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/components.css">
+<title>Guia de componentes · BLOCKREADY</title>
+</head>
+<body data-page="guia" data-title="Guia de componentes">
+<main id="content" class="content stack">
+  <section class="panel">
+    <h2>Paleta</h2>
+    <p class="panel-note">Definida como variáveis CSS em /css/tokens.css.</p>
+    <div class="swatches">
+      <div class="swatch"><i style="background:var(--navy-900)"></i><span>Azul-marinho</span></div>
+      <div class="swatch"><i style="background:var(--blue)"></i><span>Azul tecnológico</span></div>
+      <div class="swatch"><i style="background:var(--cyan)"></i><span>Ciano</span></div>
+      <div class="swatch"><i style="background:var(--alert)"></i><span>Laranja de alerta</span></div>
+      <div class="swatch"><i style="background:var(--gray-200)"></i><span>Cinza</span></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Botões</h2>
+    <div class="row">
+      <button class="btn btn-primary" type="button">Salvar</button>
+      <button class="btn btn-secondary" type="button">Cancelar</button>
+      <button class="btn btn-alert" type="button">Registrar alerta</button>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Selos de estado</h2>
+    <div class="row">
+      <span class="badge badge-ok">Disponível</span>
+      <span class="badge badge-info">Em análise</span>
+      <span class="badge badge-alert">Insuficiente</span>
+      <span class="badge badge-danger">Indisponível</span>
+      <span class="badge badge-neutral">Sem registros</span>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Aviso e estado vazio</h2>
+    <div class="notice" style="margin-top:1rem"><p><strong>Atenção.</strong> Use o aviso laranja só para o que exige ação.</p></div>
+    <div class="empty-state" style="margin-top:1rem"><h2>Nada por aqui ainda</h2><p>Diga o que a pessoa pode fazer para preencher esta tela.</p></div>
+  </section>
+</main>
+<script src="/js/api.js"></script>
+<script src="/js/layout.js"></script>
+</body>
+</html>

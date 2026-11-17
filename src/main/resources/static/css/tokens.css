@@ -1,0 +1,36 @@
+/* Identidade visual BLOCKREADY — tokens de design */
+:root {
+  --navy-950: #071226;
+  --navy-900: #0a1a33;
+  --navy-800: #10264a;
+  --navy-700: #1b3a6b;
+  --blue: #1f6fe5;
+  --blue-700: #1858bd;
+  --cyan: #19c2e3;
+  --cyan-100: #d9f6fc;
+  --alert: #ff8a1f;
+  --alert-100: #fff0df;
+  --alert-700: #8a4300;
+  --ok: #138a5b;
+  --ok-100: #dcf5ea;
+  --danger: #c2331f;
+  --danger-100: #fde5e1;
+
+  --ink: #0f1b2d;
+  --gray-700: #475569;
+  --gray-500: #64748b;
+  --gray-300: #cbd5e1;
+  --gray-200: #dde3ec;
+  --gray-100: #eef2f7;
+  --white: #ffffff;
+
+  --font: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.75rem;
+
+  --radius: 6px;
+  --sidebar-w: 16.5rem;
+  --header-h: 3.75rem;
+}

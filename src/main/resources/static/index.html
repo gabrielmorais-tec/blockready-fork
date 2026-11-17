@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/components.css">
+<title>Painel · BLOCKREADY</title>
+</head>
+<body data-page="painel" data-title="Painel">
+<main id="content" class="content stack" hidden>
+  <section class="hero">
+    <h2>Planejamento comunitário para as primeiras 72 horas</h2>
+    <p>Reúna moradores, organizações e voluntários para mapear recursos essenciais e identificar onde falta cobertura.</p>
+    <div class="horizon" role="img" aria-label="Horizonte de planejamento de 72 horas, dividido em três períodos de 24 horas">
+      <div class="horizon-bar"><span></span><span></span><span></span></div>
+      <div class="horizon-scale"><span>0 h</span><span>24 h</span><span>48 h · 72 h</span></div>
+    </div>
+  </section>
+
+  <div class="notice" role="note">
+    <p><strong>Ferramenta de apoio ao planejamento.</strong> O BLOCKREADY não garante a sobrevivência nem a segurança de uma comunidade durante uma emergência. Em risco imediato, acione os serviços oficiais de emergência.</p>
+  </div>
+
+  <section aria-labelledby="h-num">
+    <h2 id="h-num">Situação registrada</h2>
+    <p class="panel-note" id="dash-fonte">Carregando…</p>
+    <div id="dash-erro"></div>
+    <div class="stat-grid" id="stats" aria-live="polite"></div>
+  </section>
+
+  <div class="grid-2" id="dash-detalhes"></div>
+
+  <section class="panel" aria-labelledby="h-status">
+    <h2 id="h-status">Estado do sistema</h2>
+    <p class="panel-note">Dados lidos agora de /api/v1/health.</p>
+    <ul class="data-list" id="system-status" aria-live="polite"><li><span class="label">Consultando…</span></li></ul>
+  </section>
+</main>
+<script src="/js/api.js"></script>
+<script src="/js/layout.js"></script>
+<script src="/js/dashboard.js"></script>
+</body>
+</html>

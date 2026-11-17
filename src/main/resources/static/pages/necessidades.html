@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/layout.css">
+<link rel="stylesheet" href="/css/components.css">
+<title>Necessidades · BLOCKREADY</title>
+</head>
+<body data-page="necessidades" data-title="Necessidades da comunidade">
+<main id="content" class="content stack" hidden>
+  <section class="panel">
+    <h2>Registrar necessidade</h2>
+    <p class="panel-note">Informe o que falta. Uma solicitação é aberta e você pode acompanhar o andamento abaixo. Seu endereço só é visto por quem for atender.</p>
+    <div id="erro"></div>
+    <form id="form-necessidade">
+      <div class="form-grid">
+        <div class="field"><label for="categoria">O que você precisa?</label><select class="select" id="categoria" name="categoria"></select></div>
+        <div class="field"><label for="prioridade">Prioridade</label><select class="select" id="prioridade" name="prioridade"></select></div>
+        <div class="field full"><label for="descricao">Descrição</label><textarea class="textarea" id="descricao" name="descricao" required maxlength="2000"></textarea></div>
+        <div class="field"><label for="quantidade">Quantidade</label><input class="input" id="quantidade" name="quantidade" type="number" step="0.01" min="0.01" required></div>
+        <div class="field"><label for="unidade">Unidade</label><input class="input" id="unidade" name="unidade" required maxlength="30" placeholder="litros, pessoas, refeições…"></div>
+        <div class="field full"><label for="endereco">Endereço</label><input class="input" id="endereco" name="endereco" required maxlength="300"></div>
+        <div class="field"><label for="latitude">Latitude (opcional)</label><input class="input" id="latitude" name="latitude" type="number" step="any" min="-90" max="90"></div>
+        <div class="field"><label for="longitude">Longitude (opcional)</label><input class="input" id="longitude" name="longitude" type="number" step="any" min="-180" max="180"></div>
+      </div>
+      <div class="form-actions"><button class="btn btn-primary" type="submit">Registrar necessidade</button></div>
+    </form>
+  </section>
+
+  <div class="notice" id="so-morador" hidden><p>Apenas moradores registram necessidades. Use <a href="/pages/solicitacoes.html">Solicitações</a> para acompanhar e atender.</p></div>
+
+  <section class="panel">
+    <h2>Solicitações registradas</h2>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th>Data</th><th>Categoria</th><th>Descrição</th><th>Prioridade</th><th>Status</th><th>Ações</th></tr></thead>
+        <tbody id="lista"><tr><td colspan="6">Carregando…</td></tr></tbody>
+      </table>
+    </div>
+    <div class="pager" id="pager"></div>
+  </section>
+</main>
+<dialog id="dlg-hist" aria-labelledby="hist-titulo">
+  <h2 id="hist-titulo">Histórico</h2>
+  <ul class="timeline" id="hist-lista"></ul>
+  <div class="form-actions"><button class="btn btn-secondary" type="button" data-fechar>Fechar</button></div>
+</dialog>
+<script src="/js/api.js"></script>
+<script src="/js/layout.js"></script>
+<script src="/js/necessidades.js"></script>
+</body>
+</html>
