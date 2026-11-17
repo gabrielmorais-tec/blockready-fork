@@ -2,6 +2,20 @@
 
 **Stronger Neighborhoods. Safer Futures.**
 
+Projeto **Global Solution — FIAP** (Análise e Desenvolvimento de Sistemas).
+
+**Integrantes:**
+
+| RM | Nome |
+|---|---|
+| 572302 | Isaque Ferreira Rocha |
+| 570131 | Rafael Francisco de Araujo Scaglioni |
+| 572759 | Gabriel Sebastião Magalhães Ramos Morais |
+| 568805 | Luiz Filipe Timoteo Brandao |
+
+**Território-piloto:** bairro **Mathias Velho, Canoas – RS** (um dos bairros mais afetados pelas
+enchentes de maio/2024 no Rio Grande do Sul).
+
 Plataforma CitizenTech de resiliência comunitária: conecta moradores, organizações, voluntários e gestores para
 mapear recursos essenciais (água, abrigos, energia, alimentação, comunicação e saúde), identificar insuficiências
 e apoiar o planejamento durante emergências, com horizonte de até 72 horas.
@@ -118,8 +132,9 @@ rejeitados linha a linha com o motivo; estação/período de referência identif
 medições de estação associadas a recursos apenas por proximidade espacial explícita.
 
 Arquivos de demonstração (marque **"Dados demonstrativos"** ao importar): `docs/dados-exemplo/`
-(`ibge-setores-demo.csv`, `cemaden-chuva-demo.csv`, `atlas-desastres-demo.csv`). As medições de demonstração
-cobrem datas próximas a nov/2026; dados reais devem ser baixados nos portais oficiais das fontes.
+(`ibge-setores-demo.csv`, `cemaden-chuva-demo.csv`, `atlas-desastres-demo.csv`), ambientados no
+território-piloto (Mathias Velho, Canoas/RS) com valores ilustrativos. As medições de demonstração cobrem
+datas próximas a nov/2026; os dados reais do território devem ser baixados nos portais oficiais das fontes.
 
 ## Inteligência analítica (Etapa 4)
 
